@@ -46,12 +46,12 @@ type stats struct {
 }
 
 func newStats() *stats {
-	return &stats{ StatusStats: map[int]int{},SUMPrice:0}
+	return &stats{StatusStats: map[int]int{}, SUMPrice: 0}
 }
 
-func (s *stats)stack (rs RTBStat) {
+func (s *stats) stack(rs RTBStat) {
 	s.StatusStats[rs.Status]++
-	s.SUMPrice+=rs.Price
+	s.SUMPrice += rs.Price
 }
 
 func (s stats) SUMCount() int {
@@ -73,8 +73,9 @@ type RTBStats struct {
 
 // NewRTBStats is
 func NewRTBStats() *RTBStats {
-	return &RTBStats{DSPStats:map[int]*stats{}}
+	return &RTBStats{DSPStats: map[int]*stats{}}
 }
+
 // ToJSON return json
 func (rss RTBStats) ToJSON() (string, error) {
 	jsonBytes, err := json.Marshal(rss)
@@ -84,8 +85,8 @@ func (rss RTBStats) ToJSON() (string, error) {
 // Stack is
 func (rss *RTBStats) Stack(statInt int) {
 	stat := NewRTBStat(statInt)
-	if _,exist := rss.DSPStats[stat.DSPID];!exist{
-		rss.DSPStats[stat.DSPID]=newStats()
+	if _, exist := rss.DSPStats[stat.DSPID]; !exist {
+		rss.DSPStats[stat.DSPID] = newStats()
 	}
 	rss.DSPStats[stat.DSPID].stack(stat)
 }

@@ -1,6 +1,6 @@
 package rtbstats
 
-import(
+import (
 	"testing"
 )
 
@@ -10,27 +10,27 @@ const testInt = 1145141919
 func TestRTBStats_Stack(t *testing.T) {
 	var rss = NewRTBStats()
 
-	const loopNum = 3;
-	for i:=0;i<loopNum;i++ {
+	const loopNum = 3
+	for i := 0; i < loopNum; i++ {
 		rss.Stack(testInt)
 	}
 
-	rsJSON,err := NewRTBStat(testInt).ToJSON()
+	rsJSON, err := NewRTBStat(testInt).ToJSON()
 	if err != nil {
-		t.Error("error:",err)
+		t.Error("error:", err)
 	}
 
-	rssJSON,err := rss.ToJSON()
+	rssJSON, err := rss.ToJSON()
 	if err != nil {
-		t.Error("error:",err)
+		t.Error("error:", err)
 	}
 
-	t.Log("loopNum:",loopNum,"\ntestStats:",rsJSON,"Result",rssJSON)
+	t.Log("loopNum:", loopNum, "\ntestStats:", rsJSON, "Result", rssJSON)
 
 	if len(rss.DSPStats) != 1 {
 		t.Error("difference DSPStats length")
 	}
-	if _,exist := rss.DSPStats[212];!exist {
+	if _, exist := rss.DSPStats[212]; !exist {
 		t.Fatal("found 212 DSP number")
 	}
 	if rss.DSPStats[212].SUMCount() != (loopNum) {
@@ -42,7 +42,7 @@ func TestRTBStats_Stack(t *testing.T) {
 	if len(rss.DSPStats[212].StatusStats) != 1 {
 		t.Error("difference StateuStats length")
 	}
-	if _,exist := rss.DSPStats[212].StatusStats[31]; !exist {
+	if _, exist := rss.DSPStats[212].StatusStats[31]; !exist {
 		t.Fatal("found 31 status")
 	}
 	if rss.DSPStats[212].StatusStats[31] != 3 {

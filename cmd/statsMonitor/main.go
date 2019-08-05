@@ -55,7 +55,7 @@ func staking() {
 func main() {
 	go staking()
 	for {
-		time.Sleep(3 * time.Second)
+		time.Sleep(10 * time.Second)
 		jsonStr, err := rtbStats.spitRTBStats().ToJSON()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "{\"err\": \"%v\"}\n", err)

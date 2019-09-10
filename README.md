@@ -3,6 +3,7 @@
 ## get
 
 `go get github.com/K-Honkawa/rtbstats/cmd/rtbstats`
+
 `go get github.com/K-Honkawa/rtbstats/cmd/statsmonitor`
 
 ## exec

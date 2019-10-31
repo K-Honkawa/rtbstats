@@ -56,7 +56,7 @@ func staking() {
 		for _, elementStr := range elementStrs {
 			eleInt, err := strconv.Atoi(elementStr)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "{\"err\": \"%v\",\"str\":\"%v\"}\n", err, elementStr)
+				fmt.Fprintf(os.Stderr, "{\"err\": \"%v\",\"str\":\"%v\"}\n", err, stdin.Text())
 				continue
 			}
 			rtbStats.stack(eleInt)

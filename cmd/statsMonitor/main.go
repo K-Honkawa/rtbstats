@@ -9,7 +9,19 @@ import (
 	"sync"
 	"time"
 
+	flags "github.com/jessevdk/go-flags"
+
 	"github.com/K-Honkawa/rtbstats"
+)
+
+type Options struct {
+	Revision bool `short:"r" long:"revision" description:"Show revision information"`
+	Second   int  `short:"s" long:"second" description:"0 < secound "`
+}
+
+var (
+	opts     Options
+	revision = ""
 )
 
 type muRTBStats struct {
@@ -44,7 +56,7 @@ func staking() {
 		for _, elementStr := range elementStrs {
 			eleInt, err := strconv.Atoi(elementStr)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "{\"err\": \"%v\"}\n", err)
+				fmt.Fprintf(os.Stderr, "{\"err\": \"%v\",\"str\":\"%v\"}\n", err, elementStr)
 				continue
 			}
 			rtbStats.stack(eleInt)
@@ -53,9 +65,20 @@ func staking() {
 }
 
 func main() {
+	_, err := flags.Parse(&opts)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	if opts.Revision {
+		fmt.Printf("Revision:%v\n", revision)
+		os.Exit(0)
+	}
+
 	go staking()
 	for {
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(1*opts.Second) * time.Second)
 		jsonStr, err := rtbStats.spitRTBStats().ToJSON()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "{\"err\": \"%v\"}\n", err)

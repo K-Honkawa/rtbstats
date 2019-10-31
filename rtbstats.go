@@ -41,8 +41,8 @@ func NewRTBStat(i int) RTBStat {
 
 type stats struct {
 	//DSPID int
-	StatusStats map[int]int `json:"statusstats"`
-	SUMPrice    int         `json:"sumprice"`
+	StatusStats map[int]int `json:"stats"`
+	SUMPrice    int         `json:"price"`
 }
 
 func newStats() *stats {
@@ -68,7 +68,7 @@ func sumInt(is map[int]int) int {
 
 // RTBStats is Stats map[DSPID]stats
 type RTBStats struct {
-	DSPStats map[int]*stats `json:"stats"`
+	DSPStats map[int]*stats `json:"result"`
 }
 
 // NewRTBStats is

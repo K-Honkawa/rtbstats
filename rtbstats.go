@@ -1,6 +1,8 @@
 package rtbstats
 
 import (
+    "bufio"
+    "os"
 	"encoding/json"
     "image/color"
 
@@ -151,6 +153,25 @@ func (rsv rtbStatsVector) eventSize() int {
 func (rsv *rtbStatsVector) SetRTBStats(rss RTBStats) {
     rsv.rtbStatsVec = append(rsv.rtbStatsVec[1:], rss)
 }
+
+// LoadFile load file
+func (rsv *rtbStatsVector)LoadFile(path string) error {
+	fp, err := os.Open(path)
+	if err != nil {
+        return err
+	}
+	defer fp.Close()
+	scanner := bufio.NewScanner(fp)
+	for scanner.Scan() {
+        rs,err:= NewRTBStatsFromJson(scanner.Bytes())
+		if err != nil {
+			return err
+		}
+        rsv.SetRTBStats(*rs)
+	}
+	return nil
+}
+
 
 // SetLine set line
 func (rsv *rtbStatsVector) SetLine(y func (RTBStats) float64, c color.RGBA, t string) {

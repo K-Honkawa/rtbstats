@@ -82,6 +82,12 @@ func NewRTBStats() *RTBStats {
 	return &RTBStats{DSPStats: map[int]*stats{}}
 }
 
+func NewRTBStatsFromJson(jsonBytes []byte) (*RTBStats, error) {
+    ret := &RTBStats{}
+    err := json.Unmarshal(jsonBytes, ret)
+    return ret, err
+}
+
 // ToJSON return json
 func (rss RTBStats) ToJSON() (string, error) {
 	jsonBytes, err := json.Marshal(rss)

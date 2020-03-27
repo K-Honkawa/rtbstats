@@ -62,7 +62,7 @@ func TestRtbStatsVector_Png(t *testing.T) {
     plotConf.Y.Min = 0
     plotConf.Y.Max = 10
 
-    rsv := newRTBStatsVector(plotConf)
+    rsv := NewRTBStatsPlotter(plotConf)
     rsv.SetLine(func(RTBStats)float64{return 5},color.RGBA{R:255,G:0,B:0,A:255},"test")
     if err := rsv.Png("./test.png"); err !=nil {
         t.Fatal(err)

@@ -105,14 +105,14 @@ func (rss *RTBStats) Stack(statInt int) {
 	rss.DSPStats[stat.DSPID].stack(stat)
 }
 
-type rtbStatsVector struct {
+type rtbStatsPlotter struct {
     rtbStatsVec []RTBStats
     plotConf *plot.Plot
     lines []plotLine
 }
 
-func newRTBStatsVector(p *plot.Plot) *rtbStatsVector {
-    ret := &rtbStatsVector{plotConf:p}
+func NewRTBStatsPlotter(p *plot.Plot) *rtbStatsPlotter {
+    ret := &rtbStatsPlotter{plotConf:p}
     ret.rtbStatsVec = make([]RTBStats, ret.eventSize(), ret.eventSize())
     return ret
 }
@@ -142,7 +142,7 @@ func (pl plotLine) buildLinePoints(rs []RTBStats) (*plotter.Line, *plotter.Scatt
     return pLine, pScatter, nil
 }
 
-func (rsv rtbStatsVector) eventSize() int {
+func (rsv rtbStatsPlotter) eventSize() int {
     if rsv.plotConf == nil {
         return 0
     }
@@ -150,12 +150,12 @@ func (rsv rtbStatsVector) eventSize() int {
 }
 
 // SetRTBStats set rtbstats
-func (rsv *rtbStatsVector) SetRTBStats(rss RTBStats) {
+func (rsv *rtbStatsPlotter) SetRTBStats(rss RTBStats) {
     rsv.rtbStatsVec = append(rsv.rtbStatsVec[1:], rss)
 }
 
 // LoadFile load file
-func (rsv *rtbStatsVector)LoadFile(path string) error {
+func (rsv *rtbStatsPlotter)LoadFile(path string) error {
 	fp, err := os.Open(path)
 	if err != nil {
         return err
@@ -174,16 +174,16 @@ func (rsv *rtbStatsVector)LoadFile(path string) error {
 
 
 // SetLine set line
-func (rsv *rtbStatsVector) SetLine(y func (RTBStats) float64, c color.RGBA, t string) {
+func (rsv *rtbStatsPlotter) SetLine(y func (RTBStats) float64, c color.RGBA, t string) {
     rsv.lines = append(rsv.lines, plotLine{y:y, color:c, title:t})
 }
 
 // ClearLines clear lines
-func (rsv *rtbStatsVector) ClearLines(y func (RTBStats) float64, c color.RGBA, t string) {
+func (rsv *rtbStatsPlotter) ClearLines(y func (RTBStats) float64, c color.RGBA, t string) {
     rsv.lines = []plotLine{}
 }
 
-func (rsv rtbStatsVector) newPlot() (*plot.Plot, error) {
+func (rsv rtbStatsPlotter) newPlot() (*plot.Plot, error) {
     p, err := plot.New()
     if err != nil {
         return nil, err
@@ -202,7 +202,7 @@ func (rsv rtbStatsVector) newPlot() (*plot.Plot, error) {
 }
 
 // Png is make PNG
-func (rsv rtbStatsVector) Png(path string) error {
+func (rsv rtbStatsPlotter) Png(path string) error {
     p, err := rsv.newPlot()
     if err != nil{
         return err

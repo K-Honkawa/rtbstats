@@ -1,9 +1,10 @@
 package rtbstats
 
 import (
+	"image/color"
 	"testing"
-    "gonum.org/v1/plot"
-    "image/color"
+
+	"gonum.org/v1/plot"
 )
 
 // {"dspid":212,"status":31,"price":546,"res_time":11}
@@ -53,18 +54,18 @@ func TestRTBStats_Stack(t *testing.T) {
 }
 
 func TestRtbStatsVector_Png(t *testing.T) {
-    plotConf, err  := plot.New()
-    if err != nil {
-        t.Fatal(err)
-    }
-    plotConf.X.Min = 0
-    plotConf.X.Max = 10
-    plotConf.Y.Min = 0
-    plotConf.Y.Max = 10
+	plotConf, err := plot.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	plotConf.X.Min = 0
+	plotConf.X.Max = 10
+	plotConf.Y.Min = 0
+	plotConf.Y.Max = 10
 
-    rsv := NewRTBStatsPlotter(plotConf)
-    rsv.SetLine(func(RTBStats)float64{return 5},color.RGBA{R:255,G:0,B:0,A:255},"test")
-    if err := rsv.Png("./test.png"); err !=nil {
-        t.Fatal(err)
-    }
+	rsv := NewRTBStatsPlotter(plotConf)
+	rsv.SetLine(func(RTBStats) float64 { return 5 }, color.RGBA{R: 255, G: 0, B: 0, A: 255}, "test")
+	if err := rsv.Png("./test.png"); err != nil {
+		t.Fatal(err)
+	}
 }

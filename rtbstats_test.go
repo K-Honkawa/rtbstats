@@ -2,6 +2,8 @@ package rtbstats
 
 import (
 	"testing"
+    "gonum.org/v1/plot"
+    "image/color"
 )
 
 // {"dspid":212,"status":31,"price":546,"res_time":11}
@@ -48,4 +50,21 @@ func TestRTBStats_Stack(t *testing.T) {
 	if rss.DSPStats[212].StatusStats[31] != 3 {
 		t.Error("difference StateuStats[31] num")
 	}
+}
+
+func TestRtbStatsVector_Png(t *testing.T) {
+    plotConf, err  := plot.New()
+    if err != nil {
+        t.Fatal(err)
+    }
+    plotConf.X.Min = 0
+    plotConf.X.Max = 10
+    plotConf.Y.Min = 0
+    plotConf.Y.Max = 10
+
+    rsv := newRTBStatsVector(plotConf)
+    rsv.SetLine(func(RTBStats)float64{return 5},color.RGBA{R:255,G:0,B:0,A:255},"test")
+    if err := rsv.Png("./test.png"); err !=nil {
+        t.Fatal(err)
+    }
 }

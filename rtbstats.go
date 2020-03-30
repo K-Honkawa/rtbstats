@@ -96,6 +96,34 @@ func (rss RTBStats) ToJSON() (string, error) {
 	return string(jsonBytes), err
 }
 
+func (rss RTBStats) GetStatus(dspID, statID int) int {
+    stats, exist := rss.DSPStats[dspID];
+    if !exist {
+        return 0
+    }
+    ret, exist  := stats.StatusStats[statID]
+    if !exist {
+        return 0
+    }
+	return ret
+}
+
+func (rss RTBStats) GetPrice(dspID int) int {
+    stats, exist := rss.DSPStats[dspID];
+    if !exist {
+        return 0
+    }
+    return stats.SUMPrice
+}
+
+func (rss RTBStats) GetSumRequest(dspID int) int {
+    stats, exist := rss.DSPStats[dspID];
+    if !exist {
+        return 0
+    }
+    return stats.SUMCount()
+}
+
 // Stack is
 func (rss *RTBStats) Stack(statInt int) {
 	stat := NewRTBStat(statInt)

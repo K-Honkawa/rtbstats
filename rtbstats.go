@@ -133,6 +133,14 @@ func (rss *RTBStats) Stack(statInt int) {
 	rss.DSPStats[stat.DSPID].stack(stat)
 }
 
+type Plotter interface{
+    Png()
+    SetLine()
+    LoadFile()
+    SetRTBStats()
+    ClearLines()
+}
+
 type rtbStatsPlotter struct {
 	rtbStatsVec []RTBStats
 	plotConf    *plot.Plot

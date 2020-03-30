@@ -97,31 +97,31 @@ func (rss RTBStats) ToJSON() (string, error) {
 }
 
 func (rss RTBStats) GetStatus(dspID, statID int) int {
-    stats, exist := rss.DSPStats[dspID];
-    if !exist {
-        return 0
-    }
-    ret, exist  := stats.StatusStats[statID]
-    if !exist {
-        return 0
-    }
+	stats, exist := rss.DSPStats[dspID]
+	if !exist {
+		return 0
+	}
+	ret, exist := stats.StatusStats[statID]
+	if !exist {
+		return 0
+	}
 	return ret
 }
 
 func (rss RTBStats) GetPrice(dspID int) int {
-    stats, exist := rss.DSPStats[dspID];
-    if !exist {
-        return 0
-    }
-    return stats.SUMPrice
+	stats, exist := rss.DSPStats[dspID]
+	if !exist {
+		return 0
+	}
+	return stats.SUMPrice
 }
 
 func (rss RTBStats) GetSumRequest(dspID int) int {
-    stats, exist := rss.DSPStats[dspID];
-    if !exist {
-        return 0
-    }
-    return stats.SUMCount()
+	stats, exist := rss.DSPStats[dspID]
+	if !exist {
+		return 0
+	}
+	return stats.SUMCount()
 }
 
 // Stack is
@@ -133,12 +133,12 @@ func (rss *RTBStats) Stack(statInt int) {
 	rss.DSPStats[stat.DSPID].stack(stat)
 }
 
-type Plotter interface{
-    Png()
-    SetLine()
-    LoadFile()
-    SetRTBStats()
-    ClearLines()
+type Plotter interface {
+	Png(string) error
+	SetLine(func(RTBStats) float64, color.RGBA, string)
+	LoadFile(string) error
+	SetRTBStats(RTBStats)
+	ClearLines()
 }
 
 type rtbStatsPlotter struct {
@@ -147,7 +147,7 @@ type rtbStatsPlotter struct {
 	lines       []plotLine
 }
 
-func NewRTBStatsPlotter(p *plot.Plot) *rtbStatsPlotter {
+func NewRTBStatsPlotter(p *plot.Plot) Plotter {
 	ret := &rtbStatsPlotter{plotConf: p}
 	ret.rtbStatsVec = make([]RTBStats, ret.eventSize(), ret.eventSize())
 	return ret
@@ -214,7 +214,7 @@ func (rsv *rtbStatsPlotter) SetLine(y func(RTBStats) float64, c color.RGBA, t st
 }
 
 // ClearLines clear lines
-func (rsv *rtbStatsPlotter) ClearLines(y func(RTBStats) float64, c color.RGBA, t string) {
+func (rsv *rtbStatsPlotter) ClearLines() {
 	rsv.lines = []plotLine{}
 }
 
